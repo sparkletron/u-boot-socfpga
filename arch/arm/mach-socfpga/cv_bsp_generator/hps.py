@@ -18,6 +18,16 @@ import collections
 import io
 from io import StringIO
 
+class CompatStringIO(io.StringIO):
+    def write(self, s):
+        if hasattr(s, 'decode'):
+            # Use unicode for python2 to keep compatible
+            return int(super(CompatStringIO, self).write(s.decode('utf-8')))
+        else:
+            return super(CompatStringIO, self).write(s)
+    def getvalue(self):
+        return str(super(CompatStringIO, self).getvalue())
+
 class HPSGrokker(object):
 
     SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -49,7 +59,7 @@ class HPSGrokker(object):
         self.pinmuxHeaderBuffer = None
         self.pinmuxHeaderFile = None
         self.pinmuxArraySize = 0
-        self.config_hps_ = "CONFIG_HPS_"
+        self.config_hps_ = "CFG_HPS_"
         self.clockStream = None
         self.pinmux_regs = self.get_default_pinmux_regs()
         self.pinmux_configs = self.get_default_pinmux_configs()
@@ -276,44 +286,44 @@ class HPSGrokker(object):
         """ Get default pinmux values """
         p = collections.OrderedDict()
 
-        p['rgmii0'] = { 'name': 'CONFIG_HPS_EMAC0', 'used': 0 }
-        p['rgmii1'] = { 'name': 'CONFIG_HPS_EMAC1', 'used': 0 }
-        p['usb0'] = { 'name': 'CONFIG_HPS_USB0', 'used': 0 }
-        p['usb1'] = { 'name': 'CONFIG_HPS_USB1', 'used': 0 }
-        p['nand'] = { 'name': 'CONFIG_HPS_NAND', 'used': 0 }
-        p['sdmmc'] = { 'name': 'CONFIG_HPS_SDMMC', 'used': 0 }
-        p['CONFIG_HPS_SDMMC_BUSWIDTH'] = { 'name': 'CONFIG_HPS_SDMMC_BUSWIDTH', 'used': 0 }
-        p['qspi'] = { 'name': 'CONFIG_HPS_QSPI', 'used': 0 }
-        p['CONFIG_HPS_QSPI_CS3'] = { 'name': 'CONFIG_HPS_QSPI_CS3', 'used': 0 }
-        p['CONFIG_HPS_QSPI_CS2'] = { 'name': 'CONFIG_HPS_QSPI_CS2', 'used': 0 }
-        p['CONFIG_HPS_QSPI_CS1'] = { 'name': 'CONFIG_HPS_QSPI_CS1', 'used': 0 }
-        p['CONFIG_HPS_QSPI_CS0'] = { 'name': 'CONFIG_HPS_QSPI_CS0', 'used': 0 }
-        p['uart0'] = { 'name': 'CONFIG_HPS_UART0', 'used': 0 }
-        p['CONFIG_HPS_UART0_TX'] = { 'name': 'CONFIG_HPS_UART0_TX', 'used': 0 }
-        p['CONFIG_HPS_UART0_CTS'] = { 'name': 'CONFIG_HPS_UART0_CTS', 'used': 0 }
-        p['CONFIG_HPS_UART0_RTS'] = { 'name': 'CONFIG_HPS_UART0_RTS', 'used': 0 }
-        p['CONFIG_HPS_UART0_RX'] = { 'name': 'CONFIG_HPS_UART0_RX', 'used': 0 }
-        p['uart1'] = { 'name': 'CONFIG_HPS_UART1', 'used': 0 }
-        p['CONFIG_HPS_UART1_TX'] = { 'name': 'CONFIG_HPS_UART1_TX', 'used': 0 }
-        p['CONFIG_HPS_UART1_CTS'] = { 'name': 'CONFIG_HPS_UART1_CTS', 'used': 0 }
-        p['CONFIG_HPS_UART1_RTS'] = { 'name': 'CONFIG_HPS_UART1_RTS', 'used': 0 }
-        p['CONFIG_HPS_UART1_RX'] = { 'name': 'CONFIG_HPS_UART1_RX', 'used': 0 }
-        p['trace'] = { 'name': 'CONFIG_HPS_TRACE', 'used': 0 }
-        p['i2c0'] = { 'name': 'CONFIG_HPS_I2C0', 'used': 0 }
-        p['i2c1'] = { 'name': 'CONFIG_HPS_I2C1', 'used': 0 }
-        p['i2c2'] = { 'name': 'CONFIG_HPS_I2C2', 'used': 0 }
-        p['i2c3'] = { 'name': 'CONFIG_HPS_I2C3', 'used': 0 }
-        p['spim0'] = { 'name': 'CONFIG_HPS_SPIM0', 'used': 0 }
-        p['spim1'] = { 'name': 'CONFIG_HPS_SPIM1', 'used': 0 }
-        p['spis0'] = { 'name': 'CONFIG_HPS_SPIS0', 'used': 0 }
-        p['spis1'] = { 'name': 'CONFIG_HPS_SPIS1', 'used': 0 }
-        p['can0'] = { 'name': 'CONFIG_HPS_CAN0', 'used': 0 }
-        p['can1'] = { 'name': 'CONFIG_HPS_CAN1', 'used': 0 }
+        p['rgmii0'] = { 'name': 'CFG_HPS_EMAC0', 'used': 0 }
+        p['rgmii1'] = { 'name': 'CFG_HPS_EMAC1', 'used': 0 }
+        p['usb0'] = { 'name': 'CFG_HPS_USB0', 'used': 0 }
+        p['usb1'] = { 'name': 'CFG_HPS_USB1', 'used': 0 }
+        p['nand'] = { 'name': 'CFG_HPS_NAND', 'used': 0 }
+        p['sdmmc'] = { 'name': 'CFG_HPS_SDMMC', 'used': 0 }
+        p['CFG_HPS_SDMMC_BUSWIDTH'] = { 'name': 'CFG_HPS_SDMMC_BUSWIDTH', 'used': 0 }
+        p['qspi'] = { 'name': 'CFG_HPS_QSPI', 'used': 0 }
+        p['CFG_HPS_QSPI_CS3'] = { 'name': 'CFG_HPS_QSPI_CS3', 'used': 0 }
+        p['CFG_HPS_QSPI_CS2'] = { 'name': 'CFG_HPS_QSPI_CS2', 'used': 0 }
+        p['CFG_HPS_QSPI_CS1'] = { 'name': 'CFG_HPS_QSPI_CS1', 'used': 0 }
+        p['CFG_HPS_QSPI_CS0'] = { 'name': 'CFG_HPS_QSPI_CS0', 'used': 0 }
+        p['uart0'] = { 'name': 'CFG_HPS_UART0', 'used': 0 }
+        p['CFG_HPS_UART0_TX'] = { 'name': 'CFG_HPS_UART0_TX', 'used': 0 }
+        p['CFG_HPS_UART0_CTS'] = { 'name': 'CFG_HPS_UART0_CTS', 'used': 0 }
+        p['CFG_HPS_UART0_RTS'] = { 'name': 'CFG_HPS_UART0_RTS', 'used': 0 }
+        p['CFG_HPS_UART0_RX'] = { 'name': 'CFG_HPS_UART0_RX', 'used': 0 }
+        p['uart1'] = { 'name': 'CFG_HPS_UART1', 'used': 0 }
+        p['CFG_HPS_UART1_TX'] = { 'name': 'CFG_HPS_UART1_TX', 'used': 0 }
+        p['CFG_HPS_UART1_CTS'] = { 'name': 'CFG_HPS_UART1_CTS', 'used': 0 }
+        p['CFG_HPS_UART1_RTS'] = { 'name': 'CFG_HPS_UART1_RTS', 'used': 0 }
+        p['CFG_HPS_UART1_RX'] = { 'name': 'CFG_HPS_UART1_RX', 'used': 0 }
+        p['trace'] = { 'name': 'CFG_HPS_TRACE', 'used': 0 }
+        p['i2c0'] = { 'name': 'CFG_HPS_I2C0', 'used': 0 }
+        p['i2c1'] = { 'name': 'CFG_HPS_I2C1', 'used': 0 }
+        p['i2c2'] = { 'name': 'CFG_HPS_I2C2', 'used': 0 }
+        p['i2c3'] = { 'name': 'CFG_HPS_I2C3', 'used': 0 }
+        p['spim0'] = { 'name': 'CFG_HPS_SPIM0', 'used': 0 }
+        p['spim1'] = { 'name': 'CFG_HPS_SPIM1', 'used': 0 }
+        p['spis0'] = { 'name': 'CFG_HPS_SPIS0', 'used': 0 }
+        p['spis1'] = { 'name': 'CFG_HPS_SPIS1', 'used': 0 }
+        p['can0'] = { 'name': 'CFG_HPS_CAN0', 'used': 0 }
+        p['can1'] = { 'name': 'CFG_HPS_CAN1', 'used': 0 }
 
-        p['can1'] = { 'name': 'CONFIG_HPS_CAN1', 'used': 0 }
-        p['can1'] = { 'name': 'CONFIG_HPS_CAN1', 'used': 0 }
-        p['can1'] = { 'name': 'CONFIG_HPS_CAN1', 'used': 0 }
-        p['can1'] = { 'name': 'CONFIG_HPS_CAN1', 'used': 0 }
+        p['can1'] = { 'name': 'CFG_HPS_CAN1', 'used': 0 }
+        p['can1'] = { 'name': 'CFG_HPS_CAN1', 'used': 0 }
+        p['can1'] = { 'name': 'CFG_HPS_CAN1', 'used': 0 }
+        p['can1'] = { 'name': 'CFG_HPS_CAN1', 'used': 0 }
 
         return p
 
@@ -411,7 +421,7 @@ class HPSGrokker(object):
                     configNode = xmlgrok.nextElementSibling(configNode)
                     if configNode == None:
                         newLine += newLine
-                    self.pinmuxConfigBuffer.write("#define " + unicode(config_define_name) + ' ' + '(' + str(config_define_value) + ')' + newLine)
+                    self.pinmuxConfigBuffer.write("#define " + str(config_define_name) + ' ' + '(' + str(config_define_value) + ')' + newLine)
 
                 entry = self.pinmux_configs[name]
                 define_name = entry['name']
@@ -436,7 +446,7 @@ class HPSGrokker(object):
     def handleHPSPinmuxesNode(self, pinmuxesNode):
         """ PinmuxesNode is a list of pinmuxNodes
         """
-        self.pinmuxHeaderBuffer.write( unicode("const u8 sys_mgr_init_table[] = {\n"))
+        self.pinmuxHeaderBuffer.write(str("const u8 sys_mgr_init_table[] = {\n"))
 
         pinmuxNode = xmlgrok.firstElementChild(pinmuxesNode)
         while pinmuxNode != None:
@@ -452,12 +462,12 @@ class HPSGrokker(object):
         for reg, value in self.pinmux_regs.items():
             reg_count += 1
             if reg_count < pinmux_regs_count:
-                self.pinmuxHeaderBuffer.write( unicode("\t" + str(value) + ', /* ' + reg + ' */\n' ))
+                self.pinmuxHeaderBuffer.write(str("\t" + str(value) + ', /* ' + reg + ' */\n' ))
             else:
-                self.pinmuxHeaderBuffer.write( unicode("\t" + str(value) + ' /* ' + reg + ' */\n' ))
+                self.pinmuxHeaderBuffer.write(str("\t" + str(value) + ' /* ' + reg + ' */\n' ))
 
         # Write the close of the pin MUX array in the header
-        self.pinmuxHeaderBuffer.write( unicode("};" ))
+        self.pinmuxHeaderBuffer.write(str("};" ))
 
     def handleHPSClockNode(self, clockNode):
         """ A clockNode may emit a #define for the name, frequency pair
@@ -506,8 +516,8 @@ class HPSGrokker(object):
         # Unfortunately we can't determine the file name before
         # parsing the XML, so let's build up the source file
         # content in string buffer
-        self.pinmuxHeaderBuffer = io.StringIO()
-        self.pinmuxConfigBuffer = io.StringIO()
+        self.pinmuxHeaderBuffer = CompatStringIO()
+        self.pinmuxConfigBuffer = CompatStringIO()
 
         # Get a list of all nodes with the hps element name
         hpsNodeList = self.dom.getElementsByTagName('hps')
@@ -534,7 +544,7 @@ class HPSGrokker(object):
                 elif childNode.nodeName == 'peripherals':
                     self.handleHPSPeripheralNode(childNode)
                 else:
-                    print '***Error:Found unexpected HPS child node:%s' % childNode.nodeName
+                    print ("***Error:Found unexpected HPS child node:%s" % childNode.nodeName)
                 childNode = xmlgrok.nextElementSibling(childNode)
 
         self.updateTemplate("DERIVED_DEVICE_FAMILY", self.derivedDeviceFamily)
