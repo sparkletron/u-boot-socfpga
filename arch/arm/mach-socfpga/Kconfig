@@ -272,7 +272,7 @@ config SYS_VENDOR
 	default "terasic" if TARGET_SOCFPGA_TERASIC_DE10_NANO
 	default "terasic" if TARGET_SOCFPGA_TERASIC_DE10_STANDARD
 	default "terasic" if TARGET_SOCFPGA_TERASIC_SOCKIT
-	default "trenz-electronic" if TARGET_SOCFPGA_TRENZ_TEI0022_SOCKIT
+	default "trenz" if TARGET_SOCFPGA_TRENZ_TEI0022_SOCKIT
 
 config SYS_SOC
 	default "socfpga"
