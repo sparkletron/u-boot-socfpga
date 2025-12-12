@@ -424,7 +424,7 @@ dtb-$(CONFIG_TARGET_THUNDERX_88XX) += thunderx-88xx.dtb
 dtb-$(CONFIG_ARCH_SOCFPGA) +=				\
 	socfpga_agilex_n6010.dtb			\
 	socfpga_agilex_socdk.dtb			\
-	socfpga_agilex_socdk_nand.dtb                   \
+	socfpga_agilex_socdk_nand.dtb			\
 	socfpga_agilex_socdk_qspi.dtb			\
 	socfpga_arria5_secu1.dtb			\
 	socfpga_arria5_socdk.dtb			\
@@ -446,8 +446,9 @@ dtb-$(CONFIG_ARCH_SOCFPGA) +=				\
 	socfpga_cyclone5_vining_fpga.dtb		\
 	socfpga_n5x_socdk.dtb				\
 	socfpga_stratix10_socdk.dtb			\
-	socfpga_stratix10_socdk_nand.dtb                \
-	socfpga_stratix10_socdk_qspi.dtb
+	socfpga_stratix10_socdk_nand.dtb		\
+	socfpga_stratix10_socdk_qspi.dtb		\
+	socfpga_cyclone5_tei0022.dtb
 
 dtb-$(CONFIG_TARGET_DRA7XX_EVM) += dra72-evm.dtb dra7-evm.dtb	\
 	dra72-evm-revc.dtb dra71-evm.dtb dra76-evm.dtb

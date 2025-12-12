@@ -1,0 +1,41 @@
+
+#include "socfpga-common-u-boot.dtsi"
+
+&watchdog0 {
+	status = "disabled";
+};
+
+&mmc {
+	u-boot,dm-pre-reloc;
+};
+
+&qspi {
+	u-boot,dm-pre-reloc;
+};
+
+&flash {
+	compatible = "jedec,spi-nor";
+	u-boot,dm-pre-reloc;
+
+	partition@qspi-boot {
+		label = "Flash 0 Raw Data";
+		reg = <0x0 0x400000>;
+	};
+};
+
+&uart0 {
+	clock-frequency = <100000000>;
+	u-boot,dm-pre-reloc;
+};
+
+&porta {
+	bank-name = "porta";
+};
+
+&portb {
+	bank-name = "portb";
+};
+
+&portc {
+	bank-name = "portc";
+};
