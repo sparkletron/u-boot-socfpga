@@ -2,5 +2,5 @@ TEI0022
 M:	Trenz Electronics
 S:	Maintained
 F:	board/trenz/tei0022/
-F:	include/configs/socfpga_tei0022.h
-F:	configs/socfpga_tei0022_defconfig
+F:	include/configs/socfpga_trenz_tei0022.h
+F:	configs/socfpga_trenz_tei0022_defconfig
